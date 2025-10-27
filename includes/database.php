@@ -1,0 +1,227 @@
+<?php
+class Database {
+    private $pdo;
+
+    public function __construct() {
+        try {
+            $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+            $this->pdo = new PDO($dsn, DB_USER, DB_PASS, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
+        } catch(PDOException $e) {
+            die("Connection failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * A helper method to run queries.
+     * Handles cases where tables might not exist yet during development.
+     */
+    private function query($sql, $params = []) {
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            // SQLSTATE '42S02' is "Base table or view not found".
+            // If the table doesn't exist, we return null to avoid crashing.
+            if ($e->getCode() === '42S02') {
+                return null;
+            }
+            // For other errors, it's better to fail loudly.
+            throw $e;
+        }
+    }
+
+    // Reservation Methods
+    public function createReservation($data) {
+        $sql = "INSERT INTO reservations (name, email, phone, guests, date, time, occasion, notes, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            $data['name'],
+            $data['email'],
+            $data['phone'],
+            $data['guests'],
+            $data['date'],
+            $data['time'],
+            $data['occasion'],
+            $data['notes']
+        ]);
+    }
+
+    public function getReservations($limit = null) {
+        $sql = "SELECT * FROM reservations ORDER BY created_at DESC";
+        if ($limit) {
+            $sql .= " LIMIT " . intval($limit);
+        }
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    public function getReservationById($id) {
+        $sql = "SELECT * FROM reservations WHERE id = ?";
+        $stmt = $this->query($sql, [$id]);
+        return $stmt ? $stmt->fetch() : null;
+    }
+
+    public function updateReservationStatus($id, $status) {
+        $sql = "UPDATE reservations SET status = ? WHERE id = ?";
+        // Use pdo->prepare directly as this is an update action
+        // and we want it to fail if the table doesn't exist.
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$status, $id]);
+    }
+
+    // Menu Methods
+    public function getMenuItems($category = null) {
+        $sql = "SELECT * FROM menu_items WHERE 1=1";
+        $params = [];
+        
+        if ($category && $category !== 'all') {
+            $sql .= " AND category = ?";
+            $params[] = $category;
+        }
+        
+        $sql .= " ORDER BY created_at DESC";
+        $stmt = $this->query($sql, $params);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    public function getMenuItemById($id) {
+        $sql = "SELECT * FROM menu_items WHERE id = ?";
+        $stmt = $this->query($sql, [$id]);
+        return $stmt ? $stmt->fetch() : null;
+    }
+
+    public function createMenuItem($data) {
+        $sql = "INSERT INTO menu_items (name, description, price, category, image, tags, is_active) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            $data['name'],
+            $data['description'],
+            $data['price'],
+            $data['category'],
+            $data['image'],
+            $data['tags'],
+            $data['is_active']
+        ]);
+    }
+
+    public function updateMenuItem($id, $data) {
+        $sql = "UPDATE menu_items SET name = ?, description = ?, price = ?, category = ?, 
+                image = ?, tags = ?, is_active = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            $data['name'],
+            $data['description'],
+            $data['price'],
+            $data['category'],
+            $data['image'],
+            $data['tags'],
+            $data['is_active'],
+            $id
+        ]);
+    }
+
+    public function deleteMenuItem($id) {
+        $sql = "DELETE FROM menu_items WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$id]);
+    }
+
+    public function getActiveMenuItemsData() {
+        $sql = "SELECT * FROM menu_items WHERE is_active = 1 ORDER BY category, name";
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    // Statistics Methods
+    public function getTotalReservations() {
+        $stmt = $this->query("SELECT COUNT(*) FROM reservations");
+        return $stmt ? $stmt->fetchColumn() : 0;
+    }
+
+    public function getPendingReservations() {
+        $stmt = $this->query("SELECT COUNT(*) FROM reservations WHERE status = 'pending'");
+        return $stmt ? $stmt->fetchColumn() : 0;
+    }
+
+    public function getTotalMenuItems() {
+        $stmt = $this->query("SELECT COUNT(*) FROM menu_items");
+        return $stmt ? $stmt->fetchColumn() : 0;
+    }
+
+    public function getActiveMenuItems() {
+        $stmt = $this->query("SELECT COUNT(*) FROM menu_items WHERE is_active = 1");
+        return $stmt ? $stmt->fetchColumn() : 0;
+    }
+
+    public function getTodayReservations() {
+        $stmt = $this->query("SELECT COUNT(*) FROM reservations WHERE date = CURDATE()");
+        return $stmt ? $stmt->fetchColumn() : 0;
+    }
+
+    public function getRevenueToday() {
+        // This is a placeholder. A real implementation would require a
+        // junction table between reservations and menu items.
+        return 0;
+    }
+
+    public function getRecentReservations($limit = 5) {
+        $sql = "SELECT * FROM reservations ORDER BY created_at DESC LIMIT ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(1, $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Admin Authentication
+    public function validateAdmin($username, $password) {
+        $sql = "SELECT * FROM admin_users WHERE username = ? AND is_active = 1";
+        $stmt = $this->query($sql, [$username]);
+        $admin = $stmt ? $stmt->fetch() : null;
+
+        if ($admin && password_verify($password, $admin['password'])) {
+            unset($admin['password']);
+            return $admin;
+        }
+        return false;
+    }
+
+    // Contact Form Submissions
+    public function saveContactMessage($data) {
+        $sql = "INSERT INTO contact_messages (name, email, phone, subject, message, status) 
+                VALUES (?, ?, ?, ?, ?, 'unread')";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            $data['name'],
+            $data['email'],
+            $data['phone'],
+            $data['subject'],
+            $data['message']
+        ]);
+    }
+
+    public function getContactMessages($limit = null) {
+        $sql = "SELECT * FROM contact_messages ORDER BY created_at DESC";
+        if ($limit) {
+            $sql .= " LIMIT " . intval($limit);
+        }
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    // Gallery Methods
+    public function getGalleryItems() {
+        $sql = "SELECT id, title, description, image_path as image, category, tags 
+                FROM gallery_images 
+                WHERE is_active = 1 
+                ORDER BY created_at DESC";
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+}
+?>

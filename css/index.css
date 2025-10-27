@@ -1,0 +1,105 @@
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.9), rgba(230, 126, 34, 0.8));
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../images/hero/hero-bg.jpg') center/cover no-repeat;
+    z-index: -1;
+}
+
+.hero-content {
+    max-width: 600px;
+    padding: 2rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+/* Featured Dishes */
+.featured-dishes {
+    padding: 5rem 0;
+    background: var(--background-light);
+}
+
+.featured-dishes h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--secondary-color);
+}
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* About Preview */
+.about-preview {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--white);
+    text-align: center;
+}
+
+.about-content h2 {
+    color: var(--white);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Loading animations for elements */
+.dishes-grid > * {
+    animation: fadeIn 0.6s ease-out both;
+}
+
+.dishes-grid > *:nth-child(1) { animation-delay: 0.1s; }
+.dishes-grid > *:nth-child(2) { animation-delay: 0.2s; }
+.dishes-grid > *:nth-child(3) { animation-delay: 0.3s; }

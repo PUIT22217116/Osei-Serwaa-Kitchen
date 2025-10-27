@@ -1,0 +1,92 @@
+/* General Admin Styles */
+:root {
+    --admin-primary: #2c3e50; /* Dark Blue */
+    --admin-secondary: #3498db; /* Blue */
+    --admin-light: #ecf0f1; /* Light Gray */
+    --admin-white: #ffffff;
+    --admin-error: #e74c3c; /* Red */
+    --admin-success: #2ecc71; /* Green */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--admin-light);
+    color: var(--admin-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+main {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.login-container {
+    background: var(--admin-white);
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-container h1 {
+    margin-bottom: 0.5rem;
+    color: var(--admin-primary);
+}
+
+.login-container p {
+    margin-bottom: 2rem;
+    color: #7f8c8d;
+}
+
+.login-form .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--admin-secondary);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    background: var(--admin-secondary);
+    color: var(--admin-white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background: #2980b9;
+}
+
+.error-message {
+    color: var(--admin-error);
+    margin-top: 1.5rem;
+    font-weight: 500;
+}
