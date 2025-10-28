@@ -10,6 +10,21 @@ if (is_admin()) {
 }
 
 $error = null;
+$show_reset_option = false;
+
+// --- Password Reset Logic ---
+if (isset($_GET['action']) && $_GET['action'] === 'reset_admin_password') {
+    $db = new Database();
+    $new_hash = password_hash('password', PASSWORD_DEFAULT);
+    $success = $db->updateAdminPassword('admin', $new_hash);
+    if ($success) {
+        header('Location: admin-login.php?reset_success=true');
+        exit;
+    } else {
+        $error = 'Could not reset the admin password. Please check database permissions or run setup.php.';
+    }
+}
+
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,6 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } else {
         $error = 'Invalid username or password.';
+        // If login fails for the 'admin' user, offer a reset option.
+        if ($username === 'admin') {
+            $show_reset_option = true;
+        }
     }
 }
 ?>
@@ -59,6 +78,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <?php if ($error): ?>
                     <p class="error-message"><?php echo $error; ?></p>
+                <?php endif; ?>
+
+                <?php if ($show_reset_option): ?>
+                    <div class="alert alert-warning" style="margin-top: 1.5rem;">
+                        <strong>Login Failed!</strong><br>
+                        If you are trying to use the default credentials (admin/password), the password may need to be reset.
+                        <br><br>
+                        <a href="admin-login.php?action=reset_admin_password" class="btn btn-warning btn-sm">Click Here to Reset Admin Password</a>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_GET['reset_success'])): ?>
+                    <div class="alert alert-success" style="margin-top: 1.5rem;">Admin password has been successfully reset to '<strong>password</strong>'. Please try logging in again.</div>
                 <?php endif; ?>
 
                 <?php if (isset($_GET['logout'])): ?>

@@ -10,7 +10,17 @@ class Database {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
         } catch(PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
+            // If the error indicates the database does not exist (SQLSTATE 42000 / error 1049),
+            // provide a helpful message with a link to the setup script.
+            $msg = $e->getMessage();
+            $code = $e->getCode();
+            if ($code === '1049' || stripos($msg, 'Unknown database') !== false) {
+                // Friendly instruction for local XAMPP users
+                die("Connection failed: Unknown database '" . htmlspecialchars(DB_NAME) . "'.<br>" .
+                    "To create the database and tables, open <a href=\'../setup.php\'>setup.php</a> in your browser or create the database via phpMyAdmin.\n");
+            }
+
+            die("Connection failed: " . $msg);
         }
     }
 
@@ -190,6 +200,13 @@ class Database {
         }
         return false;
     }
+
+    public function updateAdminPassword($username, $new_password_hash) {
+        $sql = "UPDATE admin_users SET password = ? WHERE username = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$new_password_hash, $username]);
+    }
+
 
     // Contact Form Submissions
     public function saveContactMessage($data) {
