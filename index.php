@@ -176,7 +176,23 @@ include 'includes/header.php';
                             <div class="dish-image">
                                 <?php
                                     // Construct the image source path.
-                                    $image_src = !empty($dish['image']) ? 'images/menu/' . $dish['image'] : 'images/menu/placeholder.jpg';
+                                    // Some menu items may store images in the uploads folder (uploads/menu-items/) while
+                                    // others may use images/menu/. Prefer uploaded images when present.
+                                    $image_filename = !empty($dish['image']) ? $dish['image'] : '';
+                                    $uploaded_path = $image_filename ? 'uploads/menu-items/' . $image_filename : '';
+                                    $images_menu_path = $image_filename ? 'images/menu/' . $image_filename : '';
+
+                                    // Resolve the server filesystem path to check existence
+                                    $fs_uploaded = $uploaded_path && file_exists(__DIR__ . '/' . $uploaded_path);
+                                    $fs_images_menu = $images_menu_path && file_exists(__DIR__ . '/' . $images_menu_path);
+
+                                    if ($fs_uploaded) {
+                                        $image_src = $uploaded_path;
+                                    } elseif ($fs_images_menu) {
+                                        $image_src = $images_menu_path;
+                                    } else {
+                                        $image_src = 'images/menu/placeholder.jpg';
+                                    }
                                 ?>
                                 <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($dish['name']); ?>" onerror="this.src='images/menu/placeholder.jpg'">
                             </div>
