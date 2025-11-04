@@ -194,7 +194,9 @@ include 'includes/header.php';
                                         $image_src = 'images/menu/placeholder.jpg';
                                     }
                                 ?>
-                                <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($dish['name']); ?>" onerror="this.src='images/menu/placeholder.jpg'">
+                                <?php // Output a hidden HTML comment to aid debugging image paths ?>
+                                <?php echo "<!-- DB image: " . htmlspecialchars($dish['image']) . " | used src: " . htmlspecialchars($image_src) . " -->\n"; ?>
+                                <img src="<?php echo htmlspecialchars(str_replace(' ', '%20', $image_src)); ?>" alt="<?php echo htmlspecialchars($dish['name']); ?>" data-db-image="<?php echo htmlspecialchars($dish['image']); ?>" onerror="this.src='images/menu/placeholder.jpg'">
                             </div>
                             <div class="dish-content">
                                 <h3 class="dish-title"><?php echo htmlspecialchars($dish['name']); ?></h3>
