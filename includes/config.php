@@ -15,16 +15,49 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // WhatsApp Cloud API configuration
-// Set WA_ENABLE to true to enable automatic server-side WhatsApp notifications.
-// Provide WA_ACCESS_TOKEN and WA_PHONE_NUMBER_ID from your Facebook/Meta app.
-// WA_ADMIN_NUMBER should be the destination number in international format without '+' or leading zeros (e.g., 233246103680)
-if (!defined('WA_ENABLE')) define('WA_ENABLE', true); // Set to true to enable this feature
+// Load WhatsApp configuration from environment variables when available to avoid committing secrets.
+// To enable, set the following in your environment or a local .env file (do NOT commit .env):
+// WA_ENABLE=true
+// WA_ACCESS_TOKEN=your_long_lived_access_token
+// WA_PHONE_NUMBER_ID=your_phone_number_id
+// WA_ADMIN_NUMBER=233246103680
 
-// IMPORTANT: You must get these credentials from your Meta for Developers App dashboard.
-if (!defined('WA_ACCESS_TOKEN')) define('WA_ACCESS_TOKEN', 'YOUR_ACCESS_TOKEN_HERE'); // Replace with your actual token
-if (!defined('WA_PHONE_NUMBER_ID')) define('WA_PHONE_NUMBER_ID', 'YOUR_PHONE_NUMBER_ID_HERE'); // Replace with your actual Phone Number ID
+// Helper to interpret boolean-like env values
+function env_bool($v, $default = false) {
+    if ($v === null) return $default;
+    $v = strtolower(trim($v));
+    return in_array($v, ['1','true','yes','on'], true);
+}
 
-if (!defined('WA_ADMIN_NUMBER')) define('WA_ADMIN_NUMBER', '233246103680');
+// Define WA_ENABLE from environment if available, otherwise keep existing constant or default to false
+$wa_enable_env = getenv('WA_ENABLE');
+if ($wa_enable_env !== false) {
+    if (!defined('WA_ENABLE')) define('WA_ENABLE', env_bool($wa_enable_env, false));
+} else {
+    if (!defined('WA_ENABLE')) define('WA_ENABLE', false);
+}
+
+// Load token and phone number id from environment if present
+$wa_access_token_env = getenv('WA_ACCESS_TOKEN');
+if ($wa_access_token_env !== false) {
+    if (!defined('WA_ACCESS_TOKEN')) define('WA_ACCESS_TOKEN', $wa_access_token_env);
+} else {
+    if (!defined('WA_ACCESS_TOKEN')) define('WA_ACCESS_TOKEN', '');
+}
+
+$wa_phone_id_env = getenv('WA_PHONE_NUMBER_ID');
+if ($wa_phone_id_env !== false) {
+    if (!defined('WA_PHONE_NUMBER_ID')) define('WA_PHONE_NUMBER_ID', $wa_phone_id_env);
+} else {
+    if (!defined('WA_PHONE_NUMBER_ID')) define('WA_PHONE_NUMBER_ID', '');
+}
+
+$wa_admin_number_env = getenv('WA_ADMIN_NUMBER');
+if ($wa_admin_number_env !== false) {
+    if (!defined('WA_ADMIN_NUMBER')) define('WA_ADMIN_NUMBER', $wa_admin_number_env);
+} else {
+    if (!defined('WA_ADMIN_NUMBER')) define('WA_ADMIN_NUMBER', '233246103680');
+}
 
 // Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
