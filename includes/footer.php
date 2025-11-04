@@ -8,7 +8,7 @@
                 
                 <div class="footer-section">
                     <h4>Contact Info</h4>
-                    <p>📍 123 Food Street, Accra</p>
+                    <p>📍 Offankor Barrier, Accra</p>
                     <p>📞 +233 123 456 789</p>
                     <p>✉️ info@oseiserwakitchen.com</p>
                 </div>

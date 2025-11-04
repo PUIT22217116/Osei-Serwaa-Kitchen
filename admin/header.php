@@ -35,6 +35,10 @@ $page_title = ucfirst(str_replace(['.php', '-'], ['', ' '], $current_page));
                     <span class="menu-icon">📅</span>
                     <span class="menu-text">Reservations</span>
                 </a>
+                <a href="manage-gallery.php" class="menu-item <?php echo ($current_page == 'manage-gallery.php') ? 'active' : ''; ?>">
+                    <span class="menu-icon">🖼️</span>
+                    <span class="menu-text">Gallery</span>
+                </a>
                 <a href="../index.php" class="menu-item">
                     <span class="menu-icon">🌐</span>
                     <span class="menu-text">View Site</span>

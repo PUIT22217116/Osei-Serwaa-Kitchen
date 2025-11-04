@@ -14,6 +14,18 @@ if (!defined('CONTACT_EMAIL')) define('CONTACT_EMAIL', 'info@oseiserwakitchen.co
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// WhatsApp Cloud API configuration
+// Set WA_ENABLE to true to enable automatic server-side WhatsApp notifications.
+// Provide WA_ACCESS_TOKEN and WA_PHONE_NUMBER_ID from your Facebook/Meta app.
+// WA_ADMIN_NUMBER should be the destination number in international format without '+' or leading zeros (e.g., 233246103680)
+if (!defined('WA_ENABLE')) define('WA_ENABLE', true); // Set to true to enable this feature
+
+// IMPORTANT: You must get these credentials from your Meta for Developers App dashboard.
+if (!defined('WA_ACCESS_TOKEN')) define('WA_ACCESS_TOKEN', 'YOUR_ACCESS_TOKEN_HERE'); // Replace with your actual token
+if (!defined('WA_PHONE_NUMBER_ID')) define('WA_PHONE_NUMBER_ID', 'YOUR_PHONE_NUMBER_ID_HERE'); // Replace with your actual Phone Number ID
+
+if (!defined('WA_ADMIN_NUMBER')) define('WA_ADMIN_NUMBER', '233246103680');
+
 // Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

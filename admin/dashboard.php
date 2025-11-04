@@ -126,13 +126,13 @@ $recent_reservations = $db->getRecentReservations(5);
     </div>
     <div class="card-body">
         <div class="quick-actions">
-            <a href="manage-menu.php?action=add" class="quick-action">
+            <a href="edit-menu-item.php" class="quick-action">
                 <div class="action-icon">➕</div>
                 <span>Add Menu Item</span>
             </a>
-            <a href="manage-reservations.php" class="quick-action">
-                <div class="action-icon">📅</div>
-                <span>Manage Reservations</span>
+            <a href="manage-gallery.php" class="quick-action">
+                <div class="action-icon">🖼️</div>
+                <span>Manage Gallery</span>
             </a>
             <a href="../gallery.php" class="quick-action">
                 <div class="action-icon">🖼️</div>

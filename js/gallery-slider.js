@@ -1,165 +1,139 @@
-// Gallery functionality with filtering and lightbox
-class GallerySlider {
-    constructor() {
-        this.galleryItems = [];
-        this.filterButtons = document.querySelectorAll('.filter-btn');
-        this.galleryGrid = document.getElementById('galleryGrid');
-        this.lightbox = document.getElementById('lightbox');
-        this.currentIndex = 0;
-        this.filteredItems = [];
-        this.init();
-    }
-
-    init() {
-        this.loadGalleryItems();
-        this.setupEventListeners();
-        this.generateTimeSlots();
-    }
-
-    loadGalleryItems() {
-        // Use data provided by PHP if available, otherwise use an empty array.
-        this.galleryItems = typeof galleryData !== 'undefined' ? galleryData : [];
-
-        this.filteredItems = this.galleryItems;
-        this.renderGalleryItems();
-    }
-
-    setupEventListeners() {
-        // Filter buttons
-        this.filterButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                this.handleFilterClick(e.target);
-            });
-        });
-
-        // Lightbox
-        document.querySelector('.lightbox-close').addEventListener('click', () => {
-            this.closeLightbox();
-        });
-
-        document.getElementById('lightbox-prev').addEventListener('click', () => {
-            this.navigateLightbox(-1);
-        });
-
-        document.getElementById('lightbox-next').addEventListener('click', () => {
-            this.navigateLightbox(1);
-        });
-
-        // Close lightbox on outside click
-        this.lightbox.addEventListener('click', (e) => {
-            if (e.target === this.lightbox) {
-                this.closeLightbox();
-            }
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (this.lightbox.classList.contains('active')) {
-                if (e.key === 'Escape') this.closeLightbox();
-                if (e.key === 'ArrowLeft') this.navigateLightbox(-1);
-                if (e.key === 'ArrowRight') this.navigateLightbox(1);
-            }
-        });
-    }
-
-    handleFilterClick(button) {
-        // Remove active class from all buttons
-        this.filterButtons.forEach(btn => btn.classList.remove('active'));
-        
-        // Add active class to clicked button
-        button.classList.add('active');
-        
-        // Get filter category
-        const filter = button.getAttribute('data-filter');
-        
-        // Filter gallery items
-        this.filterGalleryItems(filter);
-    }
-
-    filterGalleryItems(category) {
-        if (category === 'all') {
+document.addEventListener('DOMContentLoaded', () => {
+    class Gallery {
+        constructor(galleryData) {
+            this.galleryItems = galleryData || [];
             this.filteredItems = this.galleryItems;
-        } else {
-            this.filteredItems = this.galleryItems.filter(item => item.category === category);
-        }
-        
-        this.renderGalleryItems();
-    }
-
-    renderGalleryItems() {
-        this.galleryGrid.innerHTML = '';
-        
-        this.filteredItems.forEach((item, index) => {
-            const galleryItemElement = this.createGalleryItemElement(item, index);
-            this.galleryGrid.appendChild(galleryItemElement);
-        });
-    }
-
-    createGalleryItemElement(item, index) {
-        const div = document.createElement('div');
-        div.className = 'gallery-item';
-        div.style.animationDelay = `${index * 0.1}s`;
-        div.setAttribute('data-index', index);
-        
-        div.innerHTML = `
-            <div class="gallery-image">
-                <img src="${item.image}" alt="${item.title}" onerror="this.src='images/gallery/placeholder.jpg'">
-            </div>
-            <div class="gallery-overlay">
-                <div class="gallery-info">
-                    <h3 class="gallery-title">${item.title}</h3>
-                    <p class="gallery-category">${item.category}</p>
-                </div>
-            </div>
-        `;
-        
-        // Add click event to open lightbox
-        div.addEventListener('click', () => {
-            this.openLightbox(index);
-        });
-        
-        return div;
-    }
-
-    openLightbox(index) {
-        this.currentIndex = index;
-        this.updateLightboxContent();
-        this.lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    closeLightbox() {
-        this.lightbox.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-
-    navigateLightbox(direction) {
-        this.currentIndex += direction;
-        
-        if (this.currentIndex < 0) {
-            this.currentIndex = this.filteredItems.length - 1;
-        } else if (this.currentIndex >= this.filteredItems.length) {
             this.currentIndex = 0;
+
+            this.grid = document.getElementById('galleryGrid');
+            this.filterButtons = document.querySelectorAll('.filter-btn');
+            
+            // Lightbox elements
+            this.lightbox = document.getElementById('lightbox');
+            this.lightboxImg = document.getElementById('lightbox-img');
+            this.lightboxTitle = document.getElementById('lightbox-title');
+            this.lightboxDesc = document.getElementById('lightbox-desc');
+            this.closeBtn = document.querySelector('.lightbox-close');
+            this.prevBtn = document.getElementById('lightbox-prev');
+            this.nextBtn = document.getElementById('lightbox-next');
+
+            this.init();
         }
-        
-        this.updateLightboxContent();
+
+        init() {
+            this.renderItems(this.galleryItems);
+            this.addEventListeners();
+        }
+
+        renderItems(items) {
+            this.grid.innerHTML = '';
+            if (items.length === 0) {
+                this.grid.innerHTML = '<p class="gallery-empty-message">No images found in this category.</p>';
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.dataset.category = item.category;
+                galleryItem.dataset.index = index;
+
+                galleryItem.innerHTML = `
+                    <div class="gallery-image">
+                        <img src="${item.image}" alt="${item.title}">
+                    </div>
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h3 class="gallery-title">${item.title}</h3>
+                            <span class="gallery-category">${item.category}</span>
+                        </div>
+                    </div>
+                `;
+
+                galleryItem.addEventListener('click', () => {
+                    this.openLightbox(item);
+                });
+
+                this.grid.appendChild(galleryItem);
+            });
+        }
+
+        addEventListeners() {
+            // Filter buttons
+            this.filterButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    this.handleFilter(e.target);
+                });
+            });
+
+            // Lightbox controls
+            this.closeBtn.addEventListener('click', () => this.closeLightbox());
+            this.lightbox.addEventListener('click', (e) => {
+                if (e.target === this.lightbox) {
+                    this.closeLightbox();
+                }
+            });
+            this.prevBtn.addEventListener('click', () => this.showPrevImage());
+            this.nextBtn.addEventListener('click', () => this.showNextImage());
+            
+            // Keyboard navigation for lightbox
+            document.addEventListener('keydown', (e) => {
+                if (this.lightbox.classList.contains('active')) {
+                    if (e.key === 'ArrowLeft') this.showPrevImage();
+                    if (e.key === 'ArrowRight') this.showNextImage();
+                    if (e.key === 'Escape') this.closeLightbox();
+                }
+            });
+        }
+
+        handleFilter(button) {
+            this.filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const filter = button.dataset.filter;
+
+            if (filter === 'all') {
+                this.filteredItems = this.galleryItems;
+            } else {
+                this.filteredItems = this.galleryItems.filter(item => item.category === filter);
+            }
+
+            this.renderItems(this.filteredItems);
+        }
+
+        openLightbox(item) {
+            this.currentIndex = this.filteredItems.findIndex(i => i.id === item.id); // Find index in the *currently filtered* list
+            this.updateLightboxContent();
+            this.lightbox.classList.add('active');
+        }
+
+        closeLightbox() {
+            this.lightbox.classList.remove('active');
+        }
+
+        updateLightboxContent() {
+            const item = this.filteredItems[this.currentIndex];
+            this.lightboxImg.src = item.image;
+            this.lightboxImg.alt = item.title;
+            this.lightboxTitle.textContent = item.title;
+            this.lightboxDesc.textContent = item.description;
+        }
+
+        showPrevImage() {
+            this.currentIndex = (this.currentIndex - 1 + this.filteredItems.length) % this.filteredItems.length;
+            this.updateLightboxContent();
+        }
+
+        showNextImage() {
+            this.currentIndex = (this.currentIndex + 1) % this.filteredItems.length;
+            this.updateLightboxContent();
+        }
     }
 
-    updateLightboxContent() {
-        const item = this.filteredItems[this.currentIndex];
-        
-        document.getElementById('lightbox-img').src = item.image;
-        document.getElementById('lightbox-img').alt = item.title;
-        document.getElementById('lightbox-title').textContent = item.title;
-        document.getElementById('lightbox-desc').textContent = item.description;
-        
-        // Update navigation buttons state
-        document.getElementById('lightbox-prev').style.display = this.filteredItems.length > 1 ? 'block' : 'none';
-        document.getElementById('lightbox-next').style.display = this.filteredItems.length > 1 ? 'block' : 'none';
+    // The 'galleryData' variable is provided by the PHP script in gallery.php
+    if (typeof galleryData !== 'undefined') {
+        new Gallery(galleryData);
+    } else {
+        console.error('Gallery data not found.');
     }
-}
-
-// Initialize gallery when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    new GallerySlider();
 });

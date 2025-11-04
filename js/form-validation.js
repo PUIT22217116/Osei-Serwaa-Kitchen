@@ -89,26 +89,110 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (isValid) {
-                // Here you would typically submit the form via AJAX
-                // For now, we'll just show the confirmation modal as a demo
-                console.log('Form is valid. Submitting...');
-                showConfirmationModal();
+                // Get form data
+                const formData = new FormData(reservationForm);
+                
+                // Disable submit button and show loading state
+                const submitBtn = reservationForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+
+                // Submit via AJAX
+                fetch('js/submit-reservation.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Build WhatsApp message
+                        const message = `*New Table Reservation* 📅\n\n` +
+                            `*Name:* ${formData.get('name')}\n` +
+                            `*Phone:* ${formData.get('phone')}\n` +
+                            `*Email:* ${formData.get('email')}\n` +
+                            `*Date:* ${formData.get('date')}\n` +
+                            `*Time:* ${formData.get('time')}\n` +
+                            `*Guests:* ${formData.get('guests')}\n` +
+                            (formData.get('occasion') ? `*Occasion:* ${formData.get('occasion')}\n` : '') +
+                            (formData.get('notes') ? `\n*Special Requests:*\n${formData.get('notes')}` : '');
+
+                        // Open WhatsApp with the message
+                        const waNumber = '233246103680'; // 0246103680 in international format
+                        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+                        window.open(waUrl, '_blank');
+
+                        // Show success modal with booking details
+                        showConfirmationModal(formData);
+                        
+                        // Reset form
+                        reservationForm.reset();
+                    } else {
+                        // Show error message
+                        if (data.errors) {
+                            Object.keys(data.errors).forEach(field => {
+                                const errorSpan = document.getElementById(`${field}Error`);
+                                if (errorSpan) {
+                                    errorSpan.textContent = data.errors[field];
+                                }
+                            });
+                        }
+                        alert(data.message || 'Failed to create reservation. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('A network error occurred. Please try again.');
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                });
             }
         });
     }
 
     /**
-     * Shows a confirmation modal (demo).
+     * Shows the confirmation modal with booking details
      */
-    function showConfirmationModal() {
+    function showConfirmationModal(formData) {
         const modal = document.getElementById('confirmationModal');
         const closeButton = document.getElementById('modalClose');
         const okButton = document.getElementById('modalOk');
+        const details = document.getElementById('reservationDetails');
 
-        if (modal) {
-            modal.classList.add('active');
-            closeButton.onclick = () => modal.classList.remove('active');
-            okButton.onclick = () => modal.classList.remove('active');
+        if (modal && details) {
+            // Format the reservation details
+            const time = formData.get('time');
+            const [hours, minutes] = time.split(':');
+            const timeStr = new Date(2000, 0, 1, hours, minutes).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            details.innerHTML = `
+                <div class="detail-item">
+                    <strong>Name:</strong> ${formData.get('name')}
+                </div>
+                <div class="detail-item">
+                    <strong>Date:</strong> ${formData.get('date')}
+                </div>
+                <div class="detail-item">
+                    <strong>Time:</strong> ${timeStr}
+                </div>
+                <div class="detail-item">
+                    <strong>Guests:</strong> ${formData.get('guests')}
+                </div>
+            `;
+
+            modal.style.display = 'block';
+            closeButton.onclick = () => modal.style.display = 'none';
+            okButton.onclick = () => modal.style.display = 'none';
+
+            // Close on clicking outside
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
         }
     }
 });

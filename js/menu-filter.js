@@ -55,18 +55,28 @@ class MenuFilter {
     renderMenuItems(items) {
         this.menuGrid.innerHTML = '';
         
-        items.forEach((item) => {
-            const menuItemElement = this.createMenuItemElement(item);
-            this.menuGrid.appendChild(menuItemElement);
-        });
-
-        // Stagger the animation for the newly rendered items
-        const visibleItems = this.menuGrid.querySelectorAll('.menu-item');
-        visibleItems.forEach((item, index) => {
-            setTimeout(() => {
-                item.classList.add('visible');
-            }, index * 100);
-        });
+        if (items.length === 0) {
+            // Display a message when no items are found
+            const emptyMessage = document.createElement('div');
+            emptyMessage.className = 'menu-empty-message';
+            emptyMessage.innerHTML = `
+                <h3>No Dishes Found</h3>
+                <p>There are currently no items in this category. Please check back later or explore our other delicious options!</p>
+            `;
+            this.menuGrid.appendChild(emptyMessage);
+        } else {
+            // Render items if they exist
+            items.forEach((item) => {
+                const menuItemElement = this.createMenuItemElement(item);
+                this.menuGrid.appendChild(menuItemElement);
+            });
+    
+            // Stagger the animation for the newly rendered items
+            const visibleItems = this.menuGrid.querySelectorAll('.menu-item');
+            visibleItems.forEach((item, index) => {
+                setTimeout(() => { item.classList.add('visible'); }, index * 100);
+            });
+        }
     }
 
     createMenuItemElement(item) {

@@ -95,6 +95,28 @@ try {
           PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+        -- Table structure for table `gallery_categories`
+        CREATE TABLE IF NOT EXISTS `gallery_categories` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `name` varchar(100) NOT NULL,
+          `slug` varchar(100) NOT NULL,
+          `is_active` tinyint(1) NOT NULL DEFAULT 1,
+          PRIMARY KEY (`id`),
+          UNIQUE KEY `slug` (`slug`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+        -- Dumping sample data for table `gallery_categories`
+        INSERT IGNORE INTO `gallery_categories` (`name`, `slug`, `is_active`) VALUES ('Food', 'food', 1), ('Restaurant', 'restaurant', 1), ('Events', 'events', 1), ('Our Team', 'team', 1);
+
+        -- Dumping sample data for table `gallery_images`
+        INSERT IGNORE INTO `gallery_images` (`title`, `description`, `image_path`, `category`, `tags`, `is_active`) VALUES
+        ('Delicious Jollof Rice', 'Our signature Jollof rice, a feast for the eyes and the palate.', 'https://placehold.co/400x300/e67e22/white?text=Jollof', 'food', 'classic,spicy', 1),
+        ('Cozy Restaurant Interior', 'The warm and inviting atmosphere of our main dining area.', 'https://placehold.co/400x300/2c3e50/white?text=Interior', 'restaurant', 'ambience,cozy', 1),
+        ('Banku with Tilapia', 'Freshly grilled tilapia served with hot banku.', 'https://placehold.co/400x300/e67e22/white?text=Banku', 'food', 'fresh,fish', 1),
+        ('A Special Birthday Event', 'Celebrating a special moment at Osei Serwa Kitchen.', 'https://placehold.co/400x300/f39c12/white?text=Event', 'events', 'celebration,party', 1),
+        ('Our Culinary Team', 'The talented chefs behind our delicious meals.', 'https://placehold.co/400x300/34495e/white?text=Team', 'team', 'chefs,kitchen', 1),
+        ('Waakye Delight', 'A classic Waakye platter with all the accompaniments.', 'https://placehold.co/400x300/e67e22/white?text=Waakye', 'food', 'traditional,hearty', 1);
+
         -- Table structure for table `menu_items`
         CREATE TABLE IF NOT EXISTS `menu_items` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -108,6 +130,14 @@ try {
           `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
           PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+        -- Dumping sample data for table `menu_items`
+        INSERT IGNORE INTO `menu_items` (`name`, `description`, `price`, `category`, `image`, `tags`, `is_active`) VALUES
+        ('Jollof Rice with Grilled Chicken', 'A classic West African one-pot rice dish, slow-cooked in a flavorful tomato-based sauce. Served with succulent grilled chicken.', '45.00', 'main', 'jollof-rice.jpg', 'classic,spicy', 1),
+        ('Waakye with Assorted Meats', 'A popular Ghanaian dish of cooked rice and beans, served with shito, gari, spaghetti, and a mix of stewed meats.', '55.00', 'main', 'waakye.jpg', 'hearty,traditional', 1),
+        ('Fufu with Light Soup', 'A soft and doughy swallow food made from pounded cassava and plantain, served with a spicy and aromatic light soup with goat meat.', '50.00', 'soup', 'fufu-light-soup.jpg', 'traditional,soup', 1),
+        ('Kelewele', 'Spicy fried plantain seasoned with ginger, garlic, and cayenne pepper. A popular Ghanaian street food snack.', '20.00', 'side', 'kelewele.jpg', 'spicy,snack,vegan', 1),
+        ('Sobolo (Bissap Drink)', 'A refreshing hibiscus iced tea infused with ginger and other local spices. Known for its deep red color and tart flavor.', '15.00', 'drink', 'sobolo.jpg', 'drink,refreshing', 1);
 
         -- Table structure for table `reservations`
         CREATE TABLE IF NOT EXISTS `reservations` (

@@ -1,0 +1,16 @@
+/* 
+ * Osei Serwa Kitchen - Color Palette
+ * Deep Orange & White Theme
+ */
+:root {
+    --primary-color: #D84315; /* Deep Orange */
+    --primary-color-dark: #BF360C; /* Darker Orange for hover/active states */
+    --secondary-color: #FF9800; /* A lighter, complementary orange */
+    
+    --text-color-light: #FFFFFF;
+    --text-color-dark: #212529;
+    --text-color-muted: #6c757d;
+
+    --background-color-light: #FFFFFF;
+    --background-color-medium: #f8f9fa;
+}

@@ -39,7 +39,7 @@
                 
                 <div class="story-image">
                     <div class="image-frame">
-                        <img src="images/about/chef-story.jpg" alt="Chef Kwame Osei" class="story-img">
+                        <img src="https://placehold.co/600x700/e67e22/white?text=Our+Story" alt="Chef Kwame Osei" class="story-img">
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
             <div class="team-grid">
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="images/about/chef-kwame.jpg" alt="Chef Kwame Osei">
+                        <img src="https://placehold.co/150x150/2c3e50/white?text=Kwame" alt="Chef Kwame Osei">
                     </div>
                     <h3>Kwame Osei</h3>
                     <p class="position">Head Chef & Founder</p>
@@ -62,7 +62,7 @@
                 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="images/about/mrs-serwa.jpg" alt="Mrs. Serwa Osei">
+                        <img src="https://placehold.co/150x150/2c3e50/white?text=Serwa" alt="Mrs. Serwa Osei">
                     </div>
                     <h3>Serwa Osei</h3>
                     <p class="position">Co-Founder & Manager</p>
@@ -71,7 +71,7 @@
                 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="images/about/chef-akua.jpg" alt="Chef Akua">
+                        <img src="https://placehold.co/150x150/2c3e50/white?text=Akua" alt="Chef Akua">
                     </div>
                     <h3>Akua Mensah</h3>
                     <p class="position">Sous Chef</p>

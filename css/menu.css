@@ -156,6 +156,21 @@
     letter-spacing: 0.5px;
 }
 
+/* Empty Menu Message */
+.menu-empty-message {
+    grid-column: 1 / -1; /* Span across all grid columns */
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--background-light);
+    border-radius: 10px;
+    color: var(--text-light);
+}
+
+.menu-empty-message h3 {
+    color: var(--secondary-color);
+    font-size: 1.8rem;
+}
+
 /* Special Offers */
 .special-offers {
     padding: 5rem 0;

@@ -85,8 +85,8 @@ class Database {
     }
 
     // Menu Methods
-    public function getMenuItems($category = null) {
-        $sql = "SELECT * FROM menu_items WHERE 1=1";
+    public function getMenuItems($category = null, $limit = null) {
+        $sql = "SELECT * FROM menu_items WHERE is_active = 1";
         $params = [];
         
         if ($category && $category !== 'all') {
@@ -94,7 +94,12 @@ class Database {
             $params[] = $category;
         }
         
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY id DESC";
+
+        if ($limit) {
+            $sql .= " LIMIT " . intval($limit);
+        }
+
         $stmt = $this->query($sql, $params);
         return $stmt ? $stmt->fetchAll() : [];
     }
@@ -233,12 +238,80 @@ class Database {
 
     // Gallery Methods
     public function getGalleryItems() {
-        $sql = "SELECT id, title, description, image_path as image, category, tags 
-                FROM gallery_images 
-                WHERE is_active = 1 
+        $sql = "SELECT * FROM gallery_images ORDER BY created_at DESC";
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    public function getActiveGalleryItems() {
+        $sql = "SELECT id, title, description, image_path as image, category, tags
+                FROM gallery_images
+                WHERE is_active = 1
                 ORDER BY created_at DESC";
         $stmt = $this->query($sql);
         return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    public function getGalleryImageById($id) {
+        $sql = "SELECT * FROM gallery_images WHERE id = ?";
+        $stmt = $this->query($sql, [$id]);
+        return $stmt ? $stmt->fetch() : null;
+    }
+
+    public function createGalleryImage($data) {
+        $sql = "INSERT INTO gallery_images (title, description, image_path, category, tags, is_active) 
+                VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$data['title'], $data['description'], $data['image_path'], $data['category'], $data['tags'], $data['is_active']]);
+    }
+
+    public function updateGalleryImage($id, $data) {
+        $sql = "UPDATE gallery_images SET title = ?, description = ?, image_path = ?, category = ?, tags = ?, is_active = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$data['title'], $data['description'], $data['image_path'], $data['category'], $data['tags'], $data['is_active'], $id]);
+    }
+
+    public function deleteGalleryImage($id) {
+        $sql = "DELETE FROM gallery_images WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$id]);
+    }
+
+    // Gallery Category Methods
+    public function getGalleryCategories() {
+        $sql = "SELECT * FROM gallery_categories ORDER BY name ASC";
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    public function getActiveGalleryCategories() {
+        $sql = "SELECT * FROM gallery_categories WHERE is_active = 1 ORDER BY name ASC";
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    public function getGalleryCategoryById($id) {
+        $sql = "SELECT * FROM gallery_categories WHERE id = ?";
+        $stmt = $this->query($sql, [$id]);
+        return $stmt ? $stmt->fetch() : null;
+    }
+
+    public function createGalleryCategory($data) {
+        $sql = "INSERT INTO gallery_categories (name, slug, is_active) VALUES (?, ?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$data['name'], $data['slug'], $data['is_active']]);
+    }
+
+    public function updateGalleryCategory($id, $data) {
+        $sql = "UPDATE gallery_categories SET name = ?, slug = ?, is_active = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$data['name'], $data['slug'], $data['is_active'], $id]);
+    }
+
+    public function deleteGalleryCategory($id) {
+        $sql = "DELETE FROM gallery_categories WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$id]);
     }
 }
 ?>

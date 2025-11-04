@@ -4,7 +4,8 @@ require_once 'includes/database.php';
 include 'includes/header.php';
 
 $db = new Database();
-$gallery_items = $db->getGalleryItems();
+$gallery_items = $db->getActiveGalleryItems();
+$gallery_categories = $db->getActiveGalleryCategories();
 ?>
 
 <main>
@@ -23,10 +24,9 @@ $gallery_items = $db->getGalleryItems();
         <div class="container">
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="food">Food</button>
-                <button class="filter-btn" data-filter="restaurant">Restaurant</button>
-                <button class="filter-btn" data-filter="events">Events</button>
-                <button class="filter-btn" data-filter="team">Our Team</button>
+                <?php foreach ($gallery_categories as $category): ?>
+                    <button class="filter-btn" data-filter="<?php echo htmlspecialchars($category['slug']); ?>"><?php echo htmlspecialchars($category['name']); ?></button>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -65,6 +65,6 @@ $gallery_items = $db->getGalleryItems();
 </script>
 
 <!-- Include the gallery-specific JavaScript -->
-<script src="js/gallery-slider.js"></script>
+<script src="js/gallery-slider.js" defer></script>
 
 <?php include 'includes/footer.php'; ?>

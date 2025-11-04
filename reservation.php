@@ -171,5 +171,66 @@ include 'includes/header.php';
 
 <!-- Include form validation script -->
 <script src="js/form-validation.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('reservationForm');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // The form-validation.js script handles the submission and shows a modal.
+        // We will listen for the success event to trigger the WhatsApp redirect.
+        
+        // This is a custom event dispatched from form-validation.js upon success
+        document.addEventListener('reservationSuccess', function(event) {
+            const formData = event.detail.formData;
+            const adminNumber = '<?php echo defined("WA_ADMIN_NUMBER") ? WA_ADMIN_NUMBER : ""; ?>';
+
+            if (!adminNumber) {
+                console.error('WhatsApp admin number is not configured in config.php');
+                return;
+            }
+
+            // Build the message
+            let message = `*New Reservation Request* 📅\n\n`;
+            message += `*Name:* ${formData.get('name')}\n`;
+            message += `*Email:* ${formData.get('email')}\n`;
+            message += `*Phone:* ${formData.get('phone')}\n`;
+            message += `*Guests:* ${formData.get('guests')}\n`;
+            message += `*Date:* ${formData.get('date')}\n`;
+            message += `*Time:* ${formData.get('time')}\n`;
+
+            const occasion = formData.get('occasion');
+            if (occasion) {
+                message += `*Occasion:* ${occasion}\n`;
+            }
+
+            const notes = formData.get('notes');
+            if (notes) {
+                message += `\n*Notes:* ${notes}`;
+            }
+
+            // Create the WhatsApp click-to-chat URL
+            const whatsappUrl = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
+
+            // Update the confirmation modal to inform the user
+            const modal = document.getElementById('confirmationModal');
+            const modalMessage = modal.querySelector('.modal-message');
+            const modalOkButton = modal.querySelector('#modalOk');
+
+            modalMessage.innerHTML = 'Your request has been saved. <strong>Click OK to send us the details on WhatsApp.</strong>';
+            
+            // When the user clicks "OK", redirect them to WhatsApp
+            modalOkButton.onclick = function() {
+                window.open(whatsappUrl, '_blank');
+                modal.style.display = 'none';
+            };
+
+        }, { once: true }); // Ensure the listener only runs once per submission
+
+    });
+});
+</script>
 
 <?php include 'includes/footer.php'; ?>

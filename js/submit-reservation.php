@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/database.php';
 
 header('Content-Type: application/json');
@@ -59,7 +60,28 @@ try {
     $db = new Database();
     if ($db->createReservation($data)) {
         // Optionally, send a confirmation email here
-        echo json_encode(['success' => true, 'message' => 'Reservation created successfully.']);
+
+        // Attempt to send WhatsApp notification if enabled
+        $wa_sent = false;
+        if (defined('WA_ENABLE') && WA_ENABLE) {
+            // Build the WhatsApp message
+            $wa_message = "*New Reservation* 📅\n\n";
+            $wa_message .= "*Name:* " . $data['name'] . "\n";
+            $wa_message .= "*Email:* " . $data['email'] . "\n";
+            $wa_message .= "*Phone:* " . $data['phone'] . "\n";
+            $wa_message .= "*Guests:* " . $data['guests'] . "\n";
+            $wa_message .= "*Date:* " . $data['date'] . "\n";
+            $wa_message .= "*Time:* " . $data['time'] . "\n";
+            if (!empty($data['occasion'])) $wa_message .= "*Occasion:* " . ucfirst($data['occasion']) . "\n";
+            if (!empty($data['notes'])) $wa_message .= "\n*Notes:* " . $data['notes'];
+
+            $wa_result = send_whatsapp_message(defined('WA_ADMIN_NUMBER') ? WA_ADMIN_NUMBER : '', $wa_message);
+            $wa_sent = !empty($wa_result['success']);
+            if (!$wa_sent) {
+                error_log('WhatsApp reservation send failed: ' . ($wa_result['response'] ?? 'no-response'));
+            }
+        }
+        echo json_encode(['success' => true, 'message' => 'Reservation created successfully.', 'wa_sent' => $wa_sent]);
     } else {
         throw new Exception('Failed to save reservation to the database.');
     }
