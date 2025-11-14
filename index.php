@@ -1,7 +1,6 @@
 <?php
 require_once 'includes/config.php';
 
-
 // --- Database Connection Check ---
 // Try to connect to the database. If it fails, guide the user to the setup script.
 try {

@@ -2,6 +2,12 @@
 // Basic configuration
 $site_title = "Osei Serwaa Kitchen";
 $current_page = basename($_SERVER['PHP_SELF']);
+// Track site visits for public pages. The track script uses absolute includes.
+$track_file = __DIR__ . '/../track_visits.php';
+if (file_exists($track_file)) {
+    // include once to avoid double counting if header is included multiple times
+    require_once $track_file;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
