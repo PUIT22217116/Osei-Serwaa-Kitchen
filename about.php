@@ -16,7 +16,7 @@
         <div class="container">
             <div class="story-grid">
                 <div class="story-content">
-                    <h2>The Osei Serwa Legacy</h2>
+                    <h2>The Osei Serwaa Legacy</h2>
                     <p>Founded in 2010 by Master Chef Kwame Osei and his wife Serwa, our kitchen brings the authentic flavors of Ghana to food lovers worldwide.</p>
                     
                     <div class="story-points">
@@ -62,7 +62,7 @@
                 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="https://placehold.co/150x150/2c3e50/white?text=Serwa" alt="Mrs. Serwa Osei">
+                        <img src="https://placehold.co/150x150/2c3e50/white?text=Serwaa" alt="Mrs. Serwaa Osei">
                     </div>
                     <h3>Serwa Osei</h3>
                     <p class="position">Co-Founder & Manager</p>

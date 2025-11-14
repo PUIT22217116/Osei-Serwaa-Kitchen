@@ -10,7 +10,7 @@ include 'includes/header.php';
         <div class="container">
             <div class="hero-content">
                 <h1>Make a Reservation</h1>
-                <p>Book your table at Osei Serwa Kitchen for an unforgettable dining experience</p>
+                <p>Book your table at Osei Serwaa Kitchen for an unforgettable dining experience</p>
             </div>
         </div>
     </section>
@@ -135,7 +135,7 @@ include 'includes/header.php';
                             <div class="feature-icon">📞</div>
                             <div class="feature-content">
                                 <h3>Need Help?</h3>
-                                <p>Call us at <strong>+233 123 456 789</strong> for immediate assistance with your reservation.</p>
+                                <p>Call us at <strong>053 495 575 / 020 363 538</strong> for immediate assistance with your reservation.</p>
                             </div>
                         </div>
                     </div>

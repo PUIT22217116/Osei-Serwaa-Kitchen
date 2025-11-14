@@ -16,7 +16,7 @@ class Database {
             $code = $e->getCode();
             if ($code === '1049' || stripos($msg, 'Unknown database') !== false) {
                 // Friendly instruction for local XAMPP users
-                die("Connection failed: Unknown database '" . htmlspecialchars(DB_NAME) . "'.<br>" .
+                die("Connection failed: Unknown database '" . htmlspecialchars(DB_NAME) . "'.<br>" . 
                     "To create the database and tables, open <a href=\'../setup.php\'>setup.php</a> in your browser or create the database via phpMyAdmin.\n");
             }
 
@@ -196,8 +196,8 @@ class Database {
     // Admin Authentication
     public function validateAdmin($username, $password) {
         $sql = "SELECT * FROM admin_users WHERE username = ? AND is_active = 1";
-        $stmt = $this->query($sql, [$username]);
-        $admin = $stmt ? $stmt->fetch() : null;
+        $stmt = $this->pdo->prepare($sql);
+        $admin = $stmt->execute([$username]) ? $stmt->fetch() : null;
 
         if ($admin && password_verify($password, $admin['password'])) {
             unset($admin['password']);
@@ -212,6 +212,52 @@ class Database {
         return $stmt->execute([$new_password_hash, $username]);
     }
 
+    public function updateAdminUsername($current_username, $new_username) {
+        // First, check if the new username is already taken by another user.
+        $check_sql = "SELECT id FROM admin_users WHERE username = ?";
+        $check_stmt = $this->pdo->prepare($check_sql);
+        $check_stmt->execute([$new_username]);
+        if ($check_stmt->fetch()) {
+            // Username exists, return false.
+            return false;
+        }
+
+        // If the username is not taken, proceed with the update.
+        $sql = "UPDATE admin_users SET username = ? WHERE username = ?";
+        $stmt = $this->pdo->prepare($sql);
+        if ($stmt->execute([$new_username, $current_username])) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Fetch an admin user by username.
+     * Returns associative array or null.
+     */
+    public function getAdminByUsername($username) {
+        $sql = "SELECT * FROM admin_users WHERE username = ? AND is_active = 1";
+        $stmt = $this->query($sql, [$username]);
+        return $stmt ? $stmt->fetch() : null;
+    }
+
+    /**
+     * Update basic admin profile fields. If avatar is null, avatar will not be changed.
+     */
+    public function updateAdminProfile($username, $name, $email, $avatar = null) {
+        if ($avatar !== null) {
+            // If a new avatar is provided, update all fields including the avatar.
+            $sql = "UPDATE admin_users SET name = ?, email = ?, avatar = ? WHERE username = ?";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([$name, $email, $avatar, $username]);
+        } else {
+            // If no new avatar is provided, update only the name and email.
+            $sql = "UPDATE admin_users SET name = ?, email = ? WHERE username = ?";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([$name, $email, $username]);
+        }
+    }
+    
 
     // Contact Form Submissions
     public function saveContactMessage($data) {
@@ -234,6 +280,42 @@ class Database {
         }
         $stmt = $this->query($sql);
         return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    public function getContactMessageById($id) {
+        $sql = "SELECT * FROM contact_messages WHERE id = ?";
+        $stmt = $this->query($sql, [$id]);
+        return $stmt ? $stmt->fetch() : null;
+    }
+
+    public function updateContactMessageStatus($id, $status) {
+        $sql = "UPDATE contact_messages SET status = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$status, $id]);
+    }
+
+    public function deleteContactMessage($id) {
+        $sql = "DELETE FROM contact_messages WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$id]);
+    }
+
+    /**
+     * Get unread contact messages (for notifications)
+     */
+    public function getUnreadContactMessages($limit = 5) {
+        $sql = "SELECT id, name, email, subject, created_at FROM contact_messages WHERE status = 'unread' ORDER BY created_at DESC LIMIT " . intval($limit);
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+    /**
+     * Count total unread contact messages
+     */
+    public function countUnreadMessages() {
+        $sql = "SELECT COUNT(*) FROM contact_messages WHERE status = 'unread'";
+        $stmt = $this->query($sql);
+        return $stmt ? (int)$stmt->fetchColumn() : 0;
     }
 
     // Gallery Methods

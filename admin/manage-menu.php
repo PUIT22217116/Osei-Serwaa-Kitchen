@@ -1,6 +1,9 @@
 <?php
+// Step 1: Initialize the admin environment and perform authentication.
+require_once __DIR__ . '/init.php';
+
+// Step 2: Now that we are authenticated, load the visual header of the page.
 require_once __DIR__ . '/header.php';
-require_admin();
 
 $db = new Database();
 

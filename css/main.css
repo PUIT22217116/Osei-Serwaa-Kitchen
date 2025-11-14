@@ -1,12 +1,6 @@
 /*
  * Osei Serwa Kitchen - Main Stylesheet
  */
-/* Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 :root {
     --primary-color: #e67e22;
@@ -18,6 +12,13 @@
     --white: #ffffff;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -101,6 +102,10 @@ h3 { font-size: 2rem; }
     transition: var(--transition);
 }
 
+.main-header.scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+}
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -220,29 +225,96 @@ h3 { font-size: 2rem; }
     border-top: 1px solid #34495e;
 }
 
+.footer-bottom a {
+    color: var(--primary-color);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hamburger {
-        display: flex;
+        display: flex !important;
     }
     
     .nav-menu {
         position: fixed;
-        left: -100%;
-        top: 70px;
+        left: -100% !important;
+        top: 68px; /* Adjust to match header height */
         flex-direction: column;
         background: var(--white);
         width: 100%;
         text-align: center;
         transition: var(--transition);
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow) !important;
         padding: 2rem 0;
     }
     
-    .nav-menu.active {
-        left: 0;
+    .nav-menu.active { /* When active, slide into view */
+        left: 0 !important;
     }
     
+    .nav-item {
+        margin: 1rem 0;
+    }
+
+    /* Hamburger animation to 'X' */
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Hero Section adjustments */
+    .hero {
+        height: 70vh;
+    }
+
+    .hero-content {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    /* General Grid Layouts */
+    .story-grid,
+    .team-grid,
+    .values-grid,
+    .contact-grid,
+    .reservation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .story-image {
+        order: -1; /* Move image to the top on mobile */
+        margin-bottom: 2rem;
+    }
+
+    /* Form adjustments */
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Footer adjustments */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
     h1 { font-size: 2.5rem; }
     h2 { font-size: 2rem; }
 }

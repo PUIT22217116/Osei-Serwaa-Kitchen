@@ -14,7 +14,7 @@ $gallery_categories = $db->getActiveGalleryCategories();
         <div class="container">
             <div class="hero-content">
                 <h1>Our Gallery</h1>
-                <p>Experience the vibrant flavors and atmosphere of Osei Serwa Kitchen</p>
+                <p>Experience the vibrant flavors and atmosphere of Osei Serwaa Kitchen</p>
             </div>
         </div>
     </section>

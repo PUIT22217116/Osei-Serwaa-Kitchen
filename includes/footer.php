@@ -2,15 +2,14 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Osei Serwa Kitchen</h3>
+                    <h3>Osei Serwaa Kitchen</h3>
                     <p>Authentic Ghanaian cuisine served with love and tradition.</p>
                 </div>
                 
                 <div class="footer-section">
                     <h4>Contact Info</h4>
-                    <p>📍 Offankor Barrier, Accra</p>
-                    <p>📞 +233 123 456 789</p>
-                    <p>✉️ info@oseiserwakitchen.com</p>
+                    <p>📍 Ofankor Barrier, Accra</p>
+                    <p>📞 053 495 575 / 020 363 538</p>
                 </div>
                 
                 <div class="footer-section">
@@ -31,7 +30,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 Osei Serwa Kitchen. All rights reserved.</p>
+                <p>&copy; 2025 Osei Serwaa Kitchen. All rights reserved. | Powered by <a href="https://www.facebook.com/profile.php?id=100082206290703" target="_blank" style="color: #D84315;"><strong>AKA-TECH</strong></a></p>
             </div>
         </div>
     </footer>

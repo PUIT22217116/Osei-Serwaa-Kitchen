@@ -30,6 +30,7 @@
     min-height: 100vh;
 }
 
+
 /* Sidebar */
 .admin-sidebar {
     width: 250px;
@@ -95,6 +96,7 @@
 .admin-main {
     flex: 1;
     margin-left: 250px;
+    overflow-x: hidden; /* Prevent horizontal scrollbars */
     transition: all 0.3s ease;
 }
 
@@ -109,6 +111,208 @@
     top: 0;
     z-index: 999;
 }
+
+/* Sidebar toggle (hamburger) - hidden by default on larger screens */
+.sidebar-toggle {
+    display: none; /* hide on desktop */
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Header: brand, search, actions layout */
+.header-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-left .brand h1 {
+    font-size: 1.25rem;
+    color: var(--admin-secondary);
+    margin-bottom: 0.15rem;
+}
+
+.header-left .brand .page-title {
+    color: var(--admin-dark);
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.notification-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 0.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--admin-dark);
+}
+
+.notification-btn:hover { background: var(--admin-light); }
+
+.notif-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--admin-danger);
+    color: white;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 999px;
+    display: none;
+}
+
+/* Notifications wrapper and menu */
+.notifications-wrapper {
+    position: relative;
+}
+
+.notifications-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: white;
+    border: 1px solid var(--admin-border);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border-radius: 8px;
+    width: 320px;
+    max-height: 400px;
+    display: none;
+    flex-direction: column;
+    z-index: 1002;
+    overflow: hidden;
+}
+
+.notifications-menu.open {
+    display: flex;
+}
+
+.notif-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--admin-border);
+    background: var(--admin-light);
+}
+
+.notif-header h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--admin-secondary);
+}
+
+.notif-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.notif-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--admin-border);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.notif-item:hover {
+    background: var(--admin-light);
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-sender {
+    font-weight: 600;
+    color: var(--admin-secondary);
+    font-size: 0.9rem;
+}
+
+.notif-preview {
+    color: var(--admin-dark);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notif-time {
+    color: #999;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.notif-footer {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--admin-border);
+    text-align: center;
+    background: var(--admin-light);
+}
+
+.notif-footer a {
+    color: var(--admin-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.notif-footer a:hover {
+    text-decoration: underline;
+}
+
+.admin-user {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.admin-user .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--admin-light);
+}
+
+.admin-user .user-name {
+    font-weight: 600;
+    color: var(--admin-secondary);
+    font-size: 0.95rem;
+}
+
+.user-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: white;
+    border: 1px solid var(--admin-border);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    min-width: 140px;
+    display: none;
+    z-index: 1002;
+}
+
+.user-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--admin-dark);
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.user-menu a:hover { background: var(--admin-light); }
+
+/* Show user menu on hover (simple, no JS required) */
+.admin-user:hover .user-menu { display: block; }
+.admin-user.open .user-menu { display: block; }
 
 .header-left h1 {
     font-size: 1.5rem;
@@ -138,6 +342,7 @@
     border-radius: 8px;
     box-shadow: var(--admin-shadow);
     margin-bottom: 1.5rem;
+    max-width: 100%;
     overflow: hidden;
 }
 
@@ -156,6 +361,11 @@
 
 .card-body {
     padding: 1.5rem;
+}
+
+/* Ensure tables inside cards don't break the layout */
+.card-body .table-responsive {
+    margin: -1.5rem; /* Counteract card-body padding */
 }
 
 /* Tables */
@@ -469,30 +679,53 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    /* Off-canvas sidebar for mobile */
     .admin-sidebar {
-        width: 70px;
+        position: fixed;
+        left: 0;
+        transform: translateX(-100%);
+        z-index: 1001; /* Above the overlay */
     }
     
     .admin-sidebar .menu-text {
-        display: none;
+        display: inline-block; /* Ensure text is visible in off-canvas menu */
     }
-    
+
+
+    .admin-sidebar.active {
+        transform: translateX(0);
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
     .admin-main {
-        margin-left: 70px;
+        margin-left: 0; /* Full width content */
     }
-    
-    .sidebar-header h2,
-    .sidebar-header p {
-        display: none;
+
+    /* Show sidebar toggle button on mobile */
+    .sidebar-toggle {
+        display: block;
+        font-size: 1.5rem;
+        color: var(--admin-secondary);
     }
-    
-    .menu-item {
-        justify-content: center;
+
+    .admin-header {
         padding: 1rem;
     }
-    
-    .menu-icon {
-        margin-right: 0;
+
+    /* Hide center search on small screens */
+    .header-center { display: none; }
+
+    .header-left h1 {
+        font-size: 1.2rem;
+    }
+
+    .admin-content {
+        padding: 1rem;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
     
     .form-row {
@@ -501,6 +734,26 @@
     
     .stats-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Overlay for when the sidebar is open */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        cursor: pointer;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
     }
 }
 

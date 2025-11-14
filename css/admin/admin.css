@@ -21,7 +21,7 @@ body {
 
 main {
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     padding: 2rem;
 }
 
@@ -89,4 +89,8 @@ main {
     color: var(--admin-error);
     margin-top: 1.5rem;
     font-weight: 500;
+}
+
+.login-footer p a {
+    color: #D84315; /* Deep Orange */
 }

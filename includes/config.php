@@ -6,7 +6,7 @@ if (!defined('DB_USER')) define('DB_USER', 'root');
 if (!defined('DB_PASS')) define('DB_PASS', '');
 
 // Site configuration
-if (!defined('SITE_NAME')) define('SITE_NAME', 'Osei Serwa Kitchen');
+if (!defined('SITE_NAME')) define('SITE_NAME', 'Osei Serwaa Kitchen');
 if (!defined('SITE_URL')) define('SITE_URL', 'http://localhost/osei-serwa-kitchen');
 if (!defined('CONTACT_EMAIL')) define('CONTACT_EMAIL', 'info@oseiserwakitchen.com');
 

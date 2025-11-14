@@ -15,14 +15,14 @@ try {
 
     if (strpos($e->getMessage(), 'Unknown database') !== false) {
         // The database does not exist. Show a helpful message.
-        echo '<h1>Welcome to Osei Serwa Kitchen Setup</h1>';
+        echo '<h1>Welcome to Osei Serwaa Kitchen Setup</h1>';
         echo '<p style="font-size: 1.2rem; color: #555;">It looks like the database is not set up yet.</p>';
         echo '<p>Please run the setup script to create the database and tables.</p>';
         echo '<a href="setup.php" class="btn btn-primary" style="margin-top: 20px; font-size: 1.1rem;">Run Database Setup</a>';
     } else {
         // Handle other database connection errors (e.g., wrong password)
         echo '<h1>Database Connection Error</h1>';
-        echo '<p style="font-size: 1.2rem; color: #dc3545;">Could not connect to the database.</p>';
+        echo '<p style="font-size: 1.2rem; color: #dc3545;">Could not connect to the database.</p>'; 
         echo '<p>Please check your database configuration in <code>includes/config.php</code> and ensure your database server (e.g., XAMPP) is running.</p>';
         echo '<p style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-top: 20px;"><strong>Error:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
     }
@@ -142,7 +142,7 @@ include 'includes/header.php';
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">Welcome to Osei Serwa Kitchen</h1>
+            <h1 class="hero-title">Welcome to Osei Serwaa Kitchen</h1>
             <p class="hero-subtitle">Experience Authentic Ghanaian Cuisine</p>
             <div class="hero-buttons">
                 <a href="menu.php" class="btn btn-primary">View Menu</a>
@@ -165,60 +165,7 @@ include 'includes/header.php';
         </div>
     </section>
 
-    <!-- Featured Dishes Section -->
-    <section class="featured-dishes" style="padding: 80px 0;">
-        <div class="container">
-            <h2>Our Specialties</h2>
-            <div class="dishes-grid">
-                <?php if (!empty($featured_dishes)): ?>
-                    <?php foreach ($featured_dishes as $dish): ?>
-                        <div class="dish-card">
-                            <div class="dish-image">
-                                <?php
-                                    // Construct the image source path.
-                                    // Some menu items may store images in the uploads folder (uploads/menu-items/) while
-                                    // others may use images/menu/. Prefer uploaded images when present.
-                                    $image_filename = !empty($dish['image']) ? $dish['image'] : '';
-                                    $uploaded_path = $image_filename ? 'uploads/menu-items/' . $image_filename : '';
-                                    $images_menu_path = $image_filename ? 'images/menu/' . $image_filename : '';
-
-                                    // Resolve the server filesystem path to check existence
-                                    $fs_uploaded = $uploaded_path && file_exists(__DIR__ . '/' . $uploaded_path);
-                                    $fs_images_menu = $images_menu_path && file_exists(__DIR__ . '/' . $images_menu_path);
-
-                                    if ($fs_uploaded) {
-                                        $image_src = $uploaded_path;
-                                    } elseif ($fs_images_menu) {
-                                        $image_src = $images_menu_path;
-                                    } else {
-                                        $image_src = 'images/menu/placeholder.jpg';
-                                    }
-                                ?>
-                                <?php // Output a hidden HTML comment to aid debugging image paths ?>
-                                <?php echo "<!-- DB image: " . htmlspecialchars($dish['image']) . " | used src: " . htmlspecialchars($image_src) . " -->\n"; ?>
-                                <img src="<?php echo htmlspecialchars(str_replace(' ', '%20', $image_src)); ?>" alt="<?php echo htmlspecialchars($dish['name']); ?>" data-db-image="<?php echo htmlspecialchars($dish['image']); ?>" onerror="this.src='images/menu/placeholder.jpg'">
-                            </div>
-                            <div class="dish-content">
-                                <h3 class="dish-title"><?php echo htmlspecialchars($dish['name']); ?></h3>
-                                <p class="dish-description">
-                                    <?php 
-                                        // Truncate description for preview
-                                        echo htmlspecialchars(substr($dish['description'], 0, 100)) . (strlen($dish['description']) > 100 ? '...' : ''); 
-                                    ?>
-                                </p>
-                                <div class="dish-footer">
-                                    <span class="dish-price">₵<?php echo htmlspecialchars(number_format($dish['price'], 2)); ?></span>
-                                    <a href="menu.php" class="btn btn-outline">View Menu</a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p style="text-align: center; grid-column: 1 / -1;">Our specialty dishes are being prepared. Please check back soon!</p>
-                <?php endif; ?>
-            </div>
-        </div>
-    </section>
+    <!-- The "Our Specialties" section is commented out for now. -->
 
     <style>
         .about-preview {

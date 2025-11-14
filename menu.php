@@ -24,10 +24,6 @@ $menu_items = $db->getActiveMenuItemsData();
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="main">Main Dishes</button>
-                <button class="filter-btn" data-filter="soup">Soups</button>
-                <button class="filter-btn" data-filter="side">Sides</button>
-                <button class="filter-btn" data-filter="drink">Drinks</button>
-                <button class="filter-btn" data-filter="dessert">Desserts</button>
             </div>
         </div>
     </section>

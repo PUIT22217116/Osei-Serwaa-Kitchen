@@ -1,9 +1,10 @@
 <?php
-// Note: The header file includes config.php and Database.php
-require_once __DIR__ . '/header.php'; // Use the admin header
+// Step 1: Initialize the admin environment and perform authentication.
+// This file loads config, database, auth, and calls require_admin().
+require_once __DIR__ . '/init.php';
 
-// Check if user is logged in
-require_admin();
+// Step 2: Now that we are authenticated, load the visual header of the page.
+require_once __DIR__ . '/header.php';
 
 // Get statistics
 $db = new Database();
@@ -146,8 +147,6 @@ $recent_reservations = $db->getRecentReservations(5);
     </div>
 </div>
 
-<?php require_once __DIR__ . '/footer.php'; // Use the admin footer ?>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const statsElements = {
@@ -246,3 +245,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+<?php require_once __DIR__ . '/footer.php'; ?>
