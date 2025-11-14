@@ -5,3 +5,18 @@
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Local PHP config (keep config.example.php in repo instead)
+/includes/config.php
+
+# Admin developer scripts that should not be committed
+/admin/reset-admin-password.php
+
+# Composer / vendor
+vendor/
+composer.lock
+
+# Logs and editor files
+*.log
+.vscode/
+.idea/
