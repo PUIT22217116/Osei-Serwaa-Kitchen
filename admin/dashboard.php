@@ -14,7 +14,8 @@ $stats = [
     'total_menu_items' => $db->getTotalMenuItems(),
     'active_menu_items' => $db->getActiveMenuItems(),
     'today_reservations' => $db->getTodayReservations(),
-    'revenue_today' => $db->getRevenueToday()
+    'revenue_today' => $db->getRevenueToday(),
+    'total_site_visits' => $db->getTotalSiteVisits()
 ];
 
 // Get recent reservations
@@ -62,6 +63,16 @@ $recent_reservations = $db->getRecentReservations(5);
             <p>Revenue Today</p>
         </div>
     </div>
+    <a href="analytics.php" class="stat-card" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <div class="stat-icon primary">
+            📊
+        </div>
+        <div class="stat-info">
+            <h3 id="stat-total-site-visits"><?php echo $stats['total_site_visits']; ?></h3>
+            <p>Total Site Visits</p>
+        </div>
+    </a>
+
 </div>
 
 <!-- Recent Reservations -->
@@ -154,12 +165,13 @@ document.addEventListener('DOMContentLoaded', function() {
         pendingReservations: document.getElementById('stat-pending-reservations'),
         totalMenuItems: document.getElementById('stat-total-menu-items'),
         revenueToday: document.getElementById('stat-revenue-today'),
-        recentReservationsBody: document.getElementById('recent-reservations-body')
+        totalSiteVisits: document.getElementById('stat-total-site-visits'),
+        recentReservationsBody: document.getElementById('recent-reservations-body'),
     };
 
     async function fetchStats() {
         try {
-            const response = await fetch('../api/get-stats.php');
+            const response = await fetch('get-stats.php');
             if (!response.ok) {
                 // Stop polling if we get an auth error (e.g., session expired)
                 if (response.status === 403) {
@@ -176,6 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 statsElements.pendingReservations.textContent = data.stats.pending_reservations;
                 statsElements.totalMenuItems.textContent = data.stats.total_menu_items;
                 statsElements.revenueToday.textContent = '₵' + parseFloat(data.stats.revenue_today).toFixed(2);
+                statsElements.totalSiteVisits.textContent = data.stats.total_site_visits;
                 updateRecentReservations(data.stats.recent_reservations);
             }
         } catch (error) {

@@ -37,6 +37,50 @@ if (!empty($_SESSION['admin_avatar'])) {
     <title><?php echo $page_title; ?> - <?php echo SITE_NAME; ?> Admin</title>
     <link rel="stylesheet" href="../css/admin/admin-main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Dropdown styles for action buttons */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none; /* Hidden by default */
+            position: absolute;
+            right: 0;
+            background-color: var(--white);
+            min-width: 180px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            z-index: 10;
+            border-radius: 6px;
+            padding: 0.5rem 0;
+            border: 1px solid #eee;
+        }
+
+        .dropdown-menu.show {
+            display: block; /* Show when active */
+        }
+
+        .dropdown-item {
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            display: block;
+            font-size: 0.875rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Table action button improvements */
+        .data-table .actions, .table .actions {
+            text-align: right;
+        }
+        .data-table .btn, .table .btn {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body class="admin-body">
     <div class="admin-container">
@@ -66,6 +110,10 @@ if (!empty($_SESSION['admin_avatar'])) {
                 <a href="contact-messages.php" class="menu-item <?php echo ($current_page == 'contact-messages.php') ? 'active' : ''; ?>">
                     <span class="menu-icon">✉️</span>
                     <span class="menu-text">Messages</span>
+                </a>
+                <a href="analytics.php" class="menu-item <?php echo ($current_page == 'analytics.php') ? 'active' : ''; ?>">
+                    <span class="menu-icon">📊</span>
+                    <span class="menu-text">Analytics</span>
                 </a>
                 <a href="../index.php" class="menu-item">
                     <span class="menu-icon">🌐</span>
