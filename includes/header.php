@@ -30,6 +30,11 @@ if (file_exists($track_file)) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script>
+        // Expose server-configured WhatsApp/admin number and display phone to client-side scripts
+        window.WA_ADMIN_NUMBER = '<?php echo defined("WA_ADMIN_NUMBER") ? WA_ADMIN_NUMBER : ""; ?>';
+        window.PHONE_DISPLAY = '<?php echo defined("PHONE_DISPLAY") ? PHONE_DISPLAY : "+233 24 750 5196"; ?>';
+    </script>
     <header class="main-header">
         <nav class="navbar">
             <div class="nav-brand">

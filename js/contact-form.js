@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 message += `*Subject:* ${currentFormData.get('subject')}\n\n`;
                 message += `*Message:*\n${currentFormData.get('message')}`;
 
-                // Use direct number if waAdminNumber is not available
-                const adminNumber = '233246103680';
+                // Use central admin number exposed to window if available, otherwise fallback
+                const adminNumber = (typeof window !== 'undefined' && (window.WA_ADMIN_NUMBER || window.waAdminNumber || window.adminNumber)) ? (window.WA_ADMIN_NUMBER || window.waAdminNumber || window.adminNumber) : '233247505196';
                 const whatsappUrl = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
 
                 // Try to open WhatsApp

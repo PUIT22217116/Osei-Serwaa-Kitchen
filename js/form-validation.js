@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             (formData.get('occasion') ? `*Occasion:* ${formData.get('occasion')}\n` : '') +
                             (formData.get('notes') ? `\n*Special Requests:*\n${formData.get('notes')}` : '');
 
-                        // Open WhatsApp with the message (official admin number)
-                        const waNumber = '233247505196'; // +233 24 750 5196 in international format
+                        // Open WhatsApp with the message (prefer server-provided `WA_ADMIN_NUMBER`)
+                        const waNumber = (typeof window !== 'undefined' && (window.WA_ADMIN_NUMBER || window.waAdminNumber || window.adminNumber)) ? (window.WA_ADMIN_NUMBER || window.waAdminNumber || window.adminNumber) : '233247505196';
                         const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
                         window.open(waUrl, '_blank');
 
