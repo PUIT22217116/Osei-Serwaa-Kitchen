@@ -33,7 +33,7 @@
                             <div class="contact-icon">📞</div>
                             <div class="contact-details">
                                 <h3>Call Us</h3>
-                                <p>053 495 575<br>020 363 538</p>
+                                <p>+233 24 750 5196</p>
                             </div>
                         </div>
                         

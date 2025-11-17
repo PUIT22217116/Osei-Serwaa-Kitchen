@@ -9,7 +9,7 @@
                 <div class="footer-section">
                     <h4>Contact Info</h4>
                     <p>📍 Ofankor Barrier, Accra</p>
-                    <p>📞 053 495 575 / 020 363 538</p>
+                    <p>📞 +233 24 750 5196</p>
                 </div>
                 
                 <div class="footer-section">

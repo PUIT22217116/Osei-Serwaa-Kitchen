@@ -135,7 +135,7 @@ include 'includes/header.php';
                             <div class="feature-icon">📞</div>
                             <div class="feature-content">
                                 <h3>Need Help?</h3>
-                                <p>Call us at <strong>053 495 575 / 020 363 538</strong> for immediate assistance with your reservation.</p>
+                                <p>Call us at <strong>+233 24 750 5196</strong> for immediate assistance with your reservation.</p>
                             </div>
                         </div>
                     </div>
