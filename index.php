@@ -150,15 +150,29 @@ include 'includes/header.php';
         </div>
         <div class="hero-slideshow">
             <?php
-                // Define your hero images here. Make sure they exist in the /images/hero/ folder.
-                $hero_images = [
-                    'hero1.jpg',
-                    'hero2.jpg',
-                    'hero3.jpg',
-                ];
+                // Load hero slides from data/home.json if available
+                $homeDataFile = __DIR__ . '/data/home.json';
+                $slides = [];
+                if (file_exists($homeDataFile)) {
+                    $json = file_get_contents($homeDataFile);
+                    $parsed = json_decode($json, true);
+                    if (is_array($parsed) && !empty($parsed['hero'])) {
+                        $slides = $parsed['hero'];
+                    }
+                }
 
-                foreach ($hero_images as $index => $image) {
-                    echo '<div class="hero-slide" style="background-image: url(\'images/hero/' . htmlspecialchars($image) . '\');"></div>';
+                // Fallback to default local images if no JSON slides available
+                if (empty($slides)) {
+                    $slides = [
+                        ['image' => 'images/hero/hero1.jpg', 'title' => '', 'subtitle' => ''],
+                        ['image' => 'images/hero/hero2.jpg', 'title' => '', 'subtitle' => ''],
+                        ['image' => 'images/hero/hero3.jpg', 'title' => '', 'subtitle' => ''],
+                    ];
+                }
+
+                foreach ($slides as $s) {
+                    $img = htmlspecialchars($s['image'] ?? '');
+                    echo '<div class="hero-slide" style="background-image: url(\'' . $img . '\');"></div>';
                 }
             ?>
         </div>

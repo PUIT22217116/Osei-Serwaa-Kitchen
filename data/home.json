@@ -1,0 +1,7 @@
+{
+  "hero": [
+    { "image": "images/hero/hero1.jpg", "title": "Welcome to Osei Serwaa Kitchen", "subtitle": "Experience Authentic Ghanaian Cuisine" },
+    { "image": "images/hero/hero2.jpg", "title": "Taste The Tradition", "subtitle": "Fresh, Local Ingredients" },
+    { "image": "images/hero/hero3.jpg", "title": "Family Recipes", "subtitle": "Flavors Passed Through Generations" }
+  ]
+}
