@@ -163,14 +163,16 @@ if (!empty($_SESSION['admin_avatar'])) {
 
                     <div class="admin-user" role="button" aria-haspopup="true" aria-expanded="false">
                         <img src="<?php echo htmlspecialchars($adminAvatar); ?>" alt="Admin avatar" class="avatar">
-                        <div class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name'] ?? 'Admin'); ?></div>
+                        <div class="user-info">
+                            <div class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name'] ?? 'Admin'); ?></div>
+                        </div>
                         <div class="user-menu" role="menu" aria-label="User menu">
                             <a href="profile.php">Profile</a>
                             <a href="settings.php">Settings</a>
                             <a href="admin-logout.php">Logout</a>
-                                </div>
-                            </div>
                         </div>
+                    </div>
+                </div>
             </header>
 
             <div class="admin-content">
