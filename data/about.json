@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "title": "Our Story",
+    "subtitle": "Traditional Ghanaian cuisine passed down through generations"
+  },
+  "story": {
+    "title": "The Osei Serwaa Legacy",
+    "paragraph": "Founded in 2010 by Master Chef Kwame Osei and his wife Serwa, our kitchen brings the authentic flavors of Ghana to food lovers worldwide.",
+    "image": "https://placehold.co/600x700/e67e22/white?text=Our+Story"
+  },
+  "team": [
+    {
+      "name": "Kwame Osei",
+      "position": "Head Chef & Founder",
+      "bio": "With over 20 years of culinary experience, Chef Kwame brings traditional Ghanaian flavors to life.",
+      "image": "https://placehold.co/150x150/2c3e50/white?text=Kwame"
+    },
+    {
+      "name": "Serwa Osei",
+      "position": "Co-Founder & Manager",
+      "bio": "Serwa ensures every guest feels at home with her warm hospitality and attention to detail.",
+      "image": "https://placehold.co/150x150/2c3e50/white?text=Serwaa"
+    },
+    {
+      "name": "Akua Mensah",
+      "position": "Sous Chef",
+      "bio": "Specializing in traditional soups and stews, Chef Akua maintains our authentic taste.",
+      "image": "https://placehold.co/150x150/2c3e50/white?text=Akua"
+    }
+  ],
+  "values": [
+    {"icon": "🌍", "title": "Authenticity", "description": "We stay true to traditional Ghanaian recipes and cooking methods."},
+    {"icon": "❤️", "title": "Passion", "description": "Every dish is prepared with love and dedication to our craft."},
+    {"icon": "🤝", "title": "Community", "description": "We believe in bringing people together through food and shared experiences."},
+    {"icon": "⭐", "title": "Excellence", "description": "We strive for perfection in every aspect of our service and cuisine."}
+  ]
+}
