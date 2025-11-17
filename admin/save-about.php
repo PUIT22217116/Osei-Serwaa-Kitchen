@@ -19,8 +19,8 @@ function handleUpload($fieldName, $uploadsDir) {
     $safe = preg_replace('/[^a-z0-9\-_.]/i', '-', pathinfo($f['name'], PATHINFO_FILENAME));
     $target = $uploadsDir . '/' . $safe . '-' . time() . '.' . $ext;
     if (move_uploaded_file($f['tmp_name'], $target)) {
-        // return path relative to project root for use in HTML
-        return str_replace('\\', '/', substr($target, strlen(__DIR__) - strlen('/admin') - 1));
+        // return a web-friendly path relative to site root (e.g. "uploads/about/filename.jpg")
+        return 'uploads/about/' . basename($target);
     }
     return null;
 }
