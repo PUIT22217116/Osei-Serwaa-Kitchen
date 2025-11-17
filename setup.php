@@ -162,6 +162,13 @@ try {
         -- Add the avatar column to admin_users if it doesn't exist
         ALTER TABLE `admin_users` ADD COLUMN IF NOT EXISTS `avatar` VARCHAR(255) DEFAULT NULL AFTER `email`;
 
+        -- Table structure for table `site_visits`
+        CREATE TABLE IF NOT EXISTS `site_visits` (
+          `visit_date` date NOT NULL,
+          `visit_count` int(11) NOT NULL DEFAULT 0,
+          PRIMARY KEY (`visit_date`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
     ");
 
     echo "<p class='success'>✅ All tables created successfully.</p>";

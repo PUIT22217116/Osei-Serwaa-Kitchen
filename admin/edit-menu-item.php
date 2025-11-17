@@ -1,9 +1,8 @@
 <?php
-require_once __DIR__ . '/header.php';
-require_admin();
+// Step 1: Initialize the environment and handle all PHP logic BEFORE any HTML output.
+require_once __DIR__ . '/init.php';
 
 $db = new Database();
-
 $is_edit = false;
 $item_id = $_GET['id'] ?? null;
 $item = null;
@@ -46,15 +45,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($is_edit) {
         $db->updateMenuItem($item_id, $data);
-        $message = 'updated';
+        $redirect_message = 'updated';
     } else {
         $db->createMenuItem($data);
-        $message = 'created';
+        $redirect_message = 'created';
     }
 
-    header("Location: manage-menu.php?success=$message");
+    header("Location: manage-menu.php?success=$redirect_message");
     exit;
 }
+
+// Step 2: Now that all PHP logic is done, include the HTML header.
+require_once __DIR__ . '/header.php';
+
 
 $page_title = $is_edit ? 'Edit Menu Item' : 'Add New Menu Item';
 ?>

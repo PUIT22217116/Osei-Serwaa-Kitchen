@@ -359,6 +359,30 @@ class Database {
         return $stmt->execute([$id]);
     }
 
+    // Site Visits Methods
+    public function incrementSiteVisit() {
+        $sql = "INSERT INTO site_visits (visit_date, visit_count) VALUES (CURDATE(), 1)
+                ON DUPLICATE KEY UPDATE visit_count = visit_count + 1";
+        return $this->query($sql);
+    }
+
+    public function getTotalSiteVisits() {
+        $sql = "SELECT SUM(visit_count) FROM site_visits";
+        $stmt = $this->query($sql);
+        return $stmt ? (int)$stmt->fetchColumn() : 0;
+    }
+
+    public function getSiteVisitsByDate($limit = null) {
+        $sql = "SELECT visit_date, visit_count FROM site_visits ORDER BY visit_date DESC";
+        if ($limit) {
+            $sql .= " LIMIT " . intval($limit);
+        }
+
+        $stmt = $this->query($sql);
+        return $stmt ? $stmt->fetchAll() : [];
+    }
+
+
     // Gallery Category Methods
     public function getGalleryCategories() {
         $sql = "SELECT * FROM gallery_categories ORDER BY name ASC";

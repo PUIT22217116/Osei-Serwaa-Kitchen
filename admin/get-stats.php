@@ -20,7 +20,9 @@ $stats = [
     'total_menu_items' => $db->getTotalMenuItems(),
     'active_menu_items' => $db->getActiveMenuItems(),
     'today_reservations' => $db->getTodayReservations(),
-    'revenue_today' => $db->getRevenueToday()
+    'revenue_today' => $db->getRevenueToday(),
+    'total_site_visits' => $db->getTotalSiteVisits(),
+    'recent_reservations' => $db->getRecentReservations(5)
 ];
 
 echo json_encode(['success' => true, 'stats' => $stats]);
