@@ -107,6 +107,10 @@ if (!empty($_SESSION['admin_avatar'])) {
                     <span class="menu-icon">🖼️</span>
                     <span class="menu-text">Gallery</span>
                 </a>
+                <a href="manage-about.php" class="menu-item <?php echo ($current_page == 'manage-about.php') ? 'active' : ''; ?>">
+                    <span class="menu-icon">📝</span>
+                    <span class="menu-text">About Page</span>
+                </a>
                 <a href="contact-messages.php" class="menu-item <?php echo ($current_page == 'contact-messages.php') ? 'active' : ''; ?>">
                     <span class="menu-icon">✉️</span>
                     <span class="menu-text">Messages</span>
