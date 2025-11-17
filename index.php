@@ -180,41 +180,7 @@ include 'includes/header.php';
 
     <!-- The "Our Specialties" section is commented out for now. -->
 
-    <style>
-        .about-preview {
-            position: relative;
-            padding: 100px 0;
-            text-align: center;
-            background: url('images/about/about-bg.jpg') no-repeat center center/cover;
-            color: #fff; /* Ensure text is white */
-        }
-
-        .about-preview::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
-            z-index: 1;
-        }
-
-        .about-preview .about-content {
-            position: relative;
-            z-index: 2; /* Place content above the overlay */
-        }
-    </style>
-    <!-- About Preview -->
-    <section class="about-preview">
-        <div class="container">
-            <div class="about-content">
-                <h2>Our Story</h2>
-                <p>Discover the rich flavors and traditions of Ghanaian cuisine...</p>
-                <a href="about.php" class="btn btn-outline">Learn More</a>
-            </div>
-        </div>
-    </section>
+    <!-- About preview removed per admin request -->
 </main>
 
 <script>
