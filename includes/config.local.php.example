@@ -2,12 +2,12 @@
 // Create a file named `includes/config.local.php` on the server (not committed to git)
 // and paste the real database credentials there. This example is safe to keep in git.
 
-if (!defined('DB_HOST')) define('DB_HOST', 'sql209.infinityfree.com');
-if (!defined('DB_NAME')) define('DB_NAME', 'if0_40441372_oseiserwaa');
-if (!defined('DB_USER')) define('DB_USER', 'if0_40441372');
+if (!defined('DB_HOST')) define('DB_HOST', 'sql312.byethost11.com');
+if (!defined('DB_NAME')) define('DB_NAME', 'YOUR_DB_NAME');
+if (!defined('DB_USER')) define('DB_USER', 'b11_40384066');
 if (!defined('DB_PASS')) define('DB_PASS', 'YOUR_DB_PASSWORD');
 
 // Optionally override SITE_URL and other values if needed
-// if (!defined('SITE_URL')) define('SITE_URL', 'https://u0m2esb9.infinityfree.com');
+// if (!defined('SITE_URL')) define('SITE_URL', 'https://agyeiabrahamko.byethost11.com');
 
 // Save this file as includes/config.local.php on the server and do NOT commit it to git.
