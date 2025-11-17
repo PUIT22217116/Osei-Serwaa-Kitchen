@@ -20,3 +20,4 @@ Next steps:
 - Harden `includes/auth.php` and implement proper admin authentication.
 
 Enjoy — let me know if you want me to wire up a sample DB, add sample menu items, or scaffold an installer.
+# osei-serwa-kitchen-
